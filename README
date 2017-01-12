@@ -1,0 +1,46 @@
+Idrac-config 0.1
+
+This is a simple module to configure iDRAC.
+You will be able to configure:
+- Hostname
+- Static IP / DHCP
+
+Future Plans:
+- Config for AD-Authentication
+
+========================================
+
+ Parameters
+ ----------
+$ensure - If set to present, installs packages and configures idrac. If set to disable, removes all packages and files created by module.
+Defaults to: present
+
+$hostname - Hostname of the server
+Default to: The server hostname is a static variable. Hostaname is collected from facter
+
+$racname - Hostname of the idrac-interface
+Default to: hostnamem <- Where "hostname" is replaced by the hostname from facter
+
+$scriptpath - Path to a folder where this module deploys some scripts for creating custom facts.
+Defaults to: /usr/local/sbin
+
+$idracversion - The version of the idrac-controller. 4-6 are valid options. Of not set, software for all versions will be installed
+Defaults to: all
+
+$dhcp - State of DHCP-setting
+Defaults to: 1 <--Which is TRUE/Enabled
+
+$staticip - Static IP-adress for the idrac-interface
+Default to: 192.168.0.1
+
+$netmask - Netmask IP-adress for the idrac-interface
+Default to: 255.255.255.9
+
+$gateway - Gateway IP-adress for the idrac-interface
+Defaults to: 192.168.0.254
+
+$pridns - Primary DNS for the idrac-interface
+Defaults to: 8.8.8.8
+
+$secdns - Secondary DNS for the idrac-interface
+Defaults to: 8.8.8.8

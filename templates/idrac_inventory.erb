@@ -1,0 +1,34 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+
+#!/bin/bash
+
+if [ -f /opt/dell/srvadmin/sbin/racadm ]
+   then
+
+        /opt/dell/srvadmin/sbin/racadm getsysinfo > /tmp/idrac.tmp
+
+        idrac_hostname=$(egrep '^DNS RAC Name' /tmp/idrac.tmp | awk '{ print $5 }')
+        idrac_dhcp=$(egrep 'DHCP Enabled' /tmp/idrac.tmp | awk '{ print $4 }')
+        idrac_staticip=$(egrep -m 1 'Current IP Address' /tmp/idrac.tmp | awk '{ print $5 }')
+        idrac_netmask=$(egrep 'Current IP Netmask' /tmp/idrac.tmp | awk '{ print $5 }')
+        idrac_gateway=$(egrep -m 1 'Current IP Gateway' /tmp/idrac.tmp | awk '{ print $5 }')
+        idrac_dns1=$(egrep -m 1 'Current DNS Server 1' /tmp/idrac.tmp | awk '{ print $6 }')
+        idrac_dns2=$(egrep -m 1 'Current DNS Server 2' /tmp/idrac.tmp | awk '{ print $6 }')
+
+        echo "idrac_hostname=$idrac_hostname" > /etc/facter/facts.d/idrac_inventory.txt
+	echo "idrac_dhcp=$idrac_dhcp" >> /etc/facter/facts.d/idrac_inventory.txt
+	echo "idrac_staticip=$idrac_staticip" >> /etc/facter/facts.d/idrac_inventory.txt
+	echo "idrac_netmask=$idrac_netmask" >> /etc/facter/facts.d/idrac_inventory.txt
+	echo "idrac_gateway=$idrac_gateway" >> /etc/facter/facts.d/idrac_inventory.txt
+	echo "idrac_dns1=$idrac_dns1" >> /etc/facter/facts.d/idrac_inventory.txt
+	echo "idrac_dns2=$idrac_dns2" >> /etc/facter/facts.d/idrac_inventory.txt
+
+        rm -rf /tmp/idrac.tmp
+
+        exit 0
+
+else
+        exit 1
+fi
+
