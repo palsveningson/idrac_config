@@ -16,10 +16,10 @@ $ensure - If set to present, installs packages and configures idrac. If set to d
 Defaults to: present
 
 $hostname - Hostname of the server
-Default to: The server hostname is a static variable. Hostaname is collected from facter
+Default to: The server hostname is a static variable. Hostname is collected from facter
 
 $racname - Hostname of the idrac-interface
-Default to: hostnamem <- Where "hostname" is replaced by the hostname from facter
+Default to: idrac-hostname <- Where "hostname" is replaced by the hostname from facter
 
 $scriptpath - Path to a folder where this module deploys some scripts for creating custom facts.
 Defaults to: /usr/local/sbin
