@@ -3,11 +3,19 @@
 
 #!/bin/bash
 
+#Checking if racadm is installed
 if [ -f /opt/dell/srvadmin/sbin/racadm ]
    then
-
+        #Asking the idrac interface for info and store them in three different files
         /opt/dell/srvadmin/sbin/racadm getsysinfo > /tmp/idrac.tmp
+	/opt/dell/srvadmin/sbin/racadm get iDRAC.ActiveDirectory > /tmp/idracad.tmp
+	/opt/dell/srvadmin/sbin/racadm get iDRAC.ADGroup.1 > /tmp/idracadg.tmp
+	/opt/dell/srvadmin/sbin/racadm get iDRAC.ADGroup.2 >> /tmp/idracadg.tmp
+	/opt/dell/srvadmin/sbin/racadm get iDRAC.ADGroup.3 >> /tmp/idracadg.tmp
+	/opt/dell/srvadmin/sbin/racadm get iDRAC.ADGroup.4 >> /tmp/idracadg.tmp
+	/opt/dell/srvadmin/sbin/racadm get iDRAC.ADGroup.5 >> /tmp/idracadg.tmp
 
+	#Creating network-related facts
         idrac_hostname=$(egrep '^DNS RAC Name' /tmp/idrac.tmp | awk '{ print $5 }')
         idrac_dhcp=$(egrep 'DHCP Enabled' /tmp/idrac.tmp | awk '{ print $4 }')
         idrac_staticip=$(egrep -m 1 'Current IP Address' /tmp/idrac.tmp | awk '{ print $5 }')
@@ -15,20 +23,114 @@ if [ -f /opt/dell/srvadmin/sbin/racadm ]
         idrac_gateway=$(egrep -m 1 'Current IP Gateway' /tmp/idrac.tmp | awk '{ print $5 }')
         idrac_dns1=$(egrep -m 1 'Current DNS Server 1' /tmp/idrac.tmp | awk '{ print $6 }')
         idrac_dns2=$(egrep -m 1 'Current DNS Server 2' /tmp/idrac.tmp | awk '{ print $6 }')
-
         echo "idrac_hostname=$idrac_hostname" > /etc/facter/facts.d/idrac_inventory.txt
-	echo "idrac_dhcp=$idrac_dhcp" >> /etc/facter/facts.d/idrac_inventory.txt
-	echo "idrac_staticip=$idrac_staticip" >> /etc/facter/facts.d/idrac_inventory.txt
-	echo "idrac_netmask=$idrac_netmask" >> /etc/facter/facts.d/idrac_inventory.txt
-	echo "idrac_gateway=$idrac_gateway" >> /etc/facter/facts.d/idrac_inventory.txt
-	echo "idrac_dns1=$idrac_dns1" >> /etc/facter/facts.d/idrac_inventory.txt
-	echo "idrac_dns2=$idrac_dns2" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_dhcp=$idrac_dhcp" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_staticip=$idrac_staticip" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_netmask=$idrac_netmask" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_gateway=$idrac_gateway" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_dns1=$idrac_dns1" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_dns2=$idrac_dns2" >> /etc/facter/facts.d/idrac_inventory.txt
 
-        rm -rf /tmp/idrac.tmp
+	#Creating Basic AD-related facts
+	idrac_AD=$(egrep '^Enable' /tmp/idracad.tmp | awk '{print substr($1,8); }')
+	idrac_ADauth=$(egrep 'AuthTimeout' /tmp/idracad.tmp)
+	idrac_ADType=$(egrep 'Schema' /tmp/idracad.tmp)
+	idrac_DC1=$(egrep 'DomainController1' /tmp/idracad.tmp)
+	idrac_DC2=$(egrep 'DomainController2' /tmp/idracad.tmp)
+	idrac_DC3=$(egrep 'DomainController3' /tmp/idracad.tmp)
+	idrac_GC1=$(egrep 'GlobalCatalog1' /tmp/idracad.tmp)
+	idrac_GC2=$(egrep 'GlobalCatalog2' /tmp/idracad.tmp)
+	idrac_GC3=$(egrep 'GlobalCatalog3' /tmp/idracad.tmp)
+	idrac_ADCert=$(egrep 'CertValidationEnable' /tmp/idracad.tmp)
+	idrac_SSO=$(egrep 'SSOEnable' /tmp/idracad.tmp)
+	idrac_LookupDC=$(egrep 'DCLookupEnable' /tmp/idracad.tmp)
+	idrac_LookupUD=$(egrep 'DCLookupByUserDomain' /tmp/idracad.tmp)
+	idrac_LookupDN=$(egrep 'DCLookupDomainName' /tmp/idracad.tmp)
+	idrac_GCroot=$(egrep 'GCRootDomain' /tmp/idracad.tmp)
+	idrac_ADRacDomain=$(egrep 'RacDomain' /tmp/idracad.tmp)
+	idrac_ADRacName=$(egrep 'RacName' /tmp/idracad.tmp)
+	idrac_GClookup=$(egrep 'GCLookupEnable' /tmp/idracad.tmp)
+	echo "idrac_ad=$idrac_AD" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_ADauth" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_$idrac_ADType" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_DC1" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_DC2" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_DC3" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_GC1" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_GC2" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_GC3" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_ADCert" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_SSO" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_LookupDC" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_LookupUD" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_LookupDN" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_GCroot" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_ADRacDomain" >> /etc/facter/facts.d/idrac_inventory.txt
+        echo "idrac_ad_$idrac_ADRacName" >> /etc/facter/facts.d/idrac_inventory.txt
+	echo "idrac_ad_$idrac_GClookup" >> /etc/facter/facts.d/idrac_inventory.txt
+
+	#Creating AD User-related facts
+	idrac_adgrp1d=$(egrep -m1 'Domain' /tmp/idracadg.tmp | tail -n1)
+	idrac_adgrp1n=$(egrep -m1 'Name' /tmp/idracadg.tmp | tail -n1)
+	idrac_adgrp1p=$(egrep -m1 'Privilege' /tmp/idracadg.tmp | tail -n1)
+
+	idrac_adgrp2d=$(egrep -m2 'Domain' /tmp/idracadg.tmp | tail -n1)
+	idrac_adgrp2n=$(egrep -m2 'Name' /tmp/idracadg.tmp | tail -n1)
+	idrac_adgrp2p=$(egrep -m2 'Privilege' /tmp/idracadg.tmp | tail -n1)
+
+	idrac_adgrp3d=$(egrep -m3 'Domain' /tmp/idracadg.tmp | tail -n1)
+	idrac_adgrp3n=$(egrep -m3 'Name' /tmp/idracadg.tmp | tail -n1)
+	idrac_adgrp3p=$(egrep -m3 'Privilege' /tmp/idracadg.tmp | tail -n1)
+
+        idrac_adgrp4d=$(egrep -m4 'Domain' /tmp/idracadg.tmp | tail -n1)
+        idrac_adgrp4n=$(egrep -m4 'Name' /tmp/idracadg.tmp | tail -n1)
+        idrac_adgrp4p=$(egrep -m4 'Privilege' /tmp/idracadg.tmp | tail -n1)
+
+        idrac_adgrp5d=$(egrep -m5 'Domain' /tmp/idracadg.tmp | tail -n1)
+        idrac_adgrp5n=$(egrep -m5 'Name' /tmp/idracadg.tmp | tail -n1)
+        idrac_adgrp5p=$(egrep -m5 'Privilege' /tmp/idracadg.tmp | tail -n1)
+
+	if [ "$idrac_adgrp1n" != "Name=" ]
+	    then
+	        echo "idrac_ad_grp1_$idrac_adgrp1d" >> /etc/facter/facts.d/idrac_inventory.txt
+        	echo "idrac_ad_grp1_$idrac_adgrp1n" >> /etc/facter/facts.d/idrac_inventory.txt
+		echo "idrac_ad_grp1_$idrac_adgrp1p" >> /etc/facter/facts.d/idrac_inventory.txt
+	fi
+
+        if [ "$idrac_adgrp2n" != "Name=" ]
+	    then
+		echo "idrac_ad_grp2_$idrac_adgrp2d" >> /etc/facter/facts.d/idrac_inventory.txt
+                echo "idrac_ad_grp2_$idrac_adgrp2n" >> /etc/facter/facts.d/idrac_inventory.txt
+                echo "idrac_ad_grp2_$idrac_adgrp2p" >> /etc/facter/facts.d/idrac_inventory.txt
+        fi
+
+        if [ "$idrac_adgrp3n" != "Name=" ]
+	    then
+		echo "idrac_ad_grp3_$idrac_adgrp3d" >> /etc/facter/facts.d/idrac_inventory.txt
+		echo "idrac_ad_grp3_$idrac_adgrp3n" >> /etc/facter/facts.d/idrac_inventory.txt
+		echo "idrac_ad_grp3_$idrac_adgrp3p" >> /etc/facter/facts.d/idrac_inventory.txt
+        fi
+
+        if [ "$idrac_adgrp4n" != "Name=" ]
+	    then
+		echo "idrac_ad_grp4_$idrac_adgrp4d" >> /etc/facter/facts.d/idrac_inventory.txt
+		echo "idrac_ad_grp4_$idrac_adgrp4n" >> /etc/facter/facts.d/idrac_inventory.txt
+		echo "idrac_ad_grp4_$idrac_adgrp4p" >> /etc/facter/facts.d/idrac_inventory.txt
+        fi
+
+	if [ "$idrac_adgrp5n" != "Name=" ]
+	    then
+		echo "idrac_ad_grp5_$idrac_adgrp5d" >> /etc/facter/facts.d/idrac_inventory.txt
+		echo "idrac_ad_grp5_$idrac_adgrp5n" >> /etc/facter/facts.d/idrac_inventory.txt
+		echo "idrac_ad_grp5_$idrac_adgrp5p" >> /etc/facter/facts.d/idrac_inventory.txt
+	fi
+
+	rm -rf /tmp/idrac.tmp
+	rm -rf /tmp/idracad.tmp
+	rm -rf /tmp/idracadg.tmp
 
         exit 0
 
 else
         exit 1
 fi
-

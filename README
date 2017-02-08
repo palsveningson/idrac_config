@@ -1,12 +1,14 @@
-Idrac-config 0.1
+Idrac-config 0.2beta
 
 This is a simple module to configure iDRAC.
 You will be able to configure:
 - Hostname
 - Static IP / DHCP
+-  AD-Authentication
 
-Future Plans:
-- Config for AD-Authentication
+To Be Done:
+- Investigate idrac-version compability
+- Documentation of AD-Authentication
 
 ========================================
 

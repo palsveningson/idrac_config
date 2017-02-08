@@ -4,18 +4,19 @@
 # ========================================
 
 class idrac_config (
-$ensure      = 'present',
-$hostname		 = $::hostname,
-$racname		 = "idrac-${::hostname}",
-$dhcp			   = 1,
-$staticip		 = $idrac_config::params::staticip,
-$netmask		 = $idrac_config::params::netmask,
-$gateway		 = $idrac_config::params::gateway,
-$pridns			 = $idrac_config::params::pridns,
-$secdns			 = $idrac_config::params::secdns,
-$scriptpath  = $idrac_config::params::scriptpath, 
-$idracversion = $idrac_config::params::idracversion,
-$allsoftware =  [ 'srvadmin-idrac7', 'srvadmin-idrac', 'srvadmin-racadm5', 'srvadmin-racadm4' ]
+$ensure         = 'present',
+$hostname       = $::hostname,
+$racname        = "idrac-${::hostname}",
+$dhcp           = 1,
+$ad             = $idrac_config::activedirectory::AD_Enable,
+$staticip       = $idrac_config::params::staticip,
+$netmask        = $idrac_config::params::netmask,
+$gateway        = $idrac_config::params::gateway,
+$pridns         = $idrac_config::params::pridns,
+$secdns         = $idrac_config::params::secdns,
+$scriptpath     = $idrac_config::params::scriptpath, 
+$idracversion   = $idrac_config::params::idracversion,
+$allsoftware    =  [ 'srvadmin-idrac7', 'srvadmin-idrac', 'srvadmin-racadm5', 'srvadmin-racadm4' ]
 ) inherits idrac_config::params {
    if $::manufacturer == 'Dell Inc.' and $ensure=='present' {
    
