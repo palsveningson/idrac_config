@@ -188,21 +188,21 @@ if $::manufacturer == 'Dell Inc.' and $ensure == 'present' and $ad == '1' {
 
   if defined($::idrac_ad_grp1_Name) and $AD_G1Name  != $::idrac_ad_grp1_Name {
     exec {'set_adgrp1':
-      command => "racadm get idrac.adgroup.1.name $AD_G1Name",
+      command => "racadm set idrac.adgroup.1.name $AD_G1Name",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_addom1'],
     }
   }
   if defined($::idrac_ad_grp1_Domain) and $AD_G1Dom  != $::idrac_ad_grp1_Domain {
     exec {'set_addom1':
-      command => "racadm get idrac.adgroup.1.domain $AD_G1Dom",
+      command => "racadm set idrac.adgroup.1.domain $AD_G1Dom",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adpri1'],
     }
   }
   if defined($::idrac_ad_grp1_Privilege) and $AD_G1Priv  != $::idrac_ad_grp1_Privilege {
     exec {'set_adpri1':
-      command => "racadm get idrac.adgroup.1.privilege $AD_G1Priv",
+      command => "racadm set idrac.adgroup.1.privilege $AD_G1Priv",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adgrp2'],
     }
@@ -211,21 +211,21 @@ if $::manufacturer == 'Dell Inc.' and $ensure == 'present' and $ad == '1' {
 
   if defined($::idrac_ad_grp2_Name) and $AD_G2Name  != $::idrac_ad_grp2_Name {
     exec {'set_adgrp2':
-      command => "racadm get idrac.adgroup.2.name $AD_G2Name",
+      command => "racadm set idrac.adgroup.2.name $AD_G2Name",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_addom2'],
     }
   }
    if defined($::idrac_ad_grp2_Domain) and $AD_G2Dom  != $::idrac_ad_grp2_Domain {
     exec {'set_addom2':
-      command => "racadm get idrac.adgroup.2.domain $AD_G2Dom",
+      command => "racadm set idrac.adgroup.2.domain $AD_G2Dom",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adpri2'],
     }
    }
    if defined($::idrac_ad_grp2_Privilege) and $AD_G2Priv  != $::idrac_ad_grp2_Privilege {
     exec {'set_adpri2':
-      command => "racadm get idrac.adgroup.2.privilege $AD_G2Priv",
+      command => "racadm set idrac.adgroup.2.privilege $AD_G2Priv",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adgrp3'],
     }
@@ -234,21 +234,21 @@ if $::manufacturer == 'Dell Inc.' and $ensure == 'present' and $ad == '1' {
 
   if defined($::idrac_ad_grp3_Name) and $AD_G3Name  != $::idrac_ad_grp3_Name  {
     exec {'set_adgrp3':
-      command => "racadm get idrac.adgroup.3.name $AD_G3Name",
+      command => "racadm set idrac.adgroup.3.name $AD_G3Name",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_addom3'],
     }
   }
    if defined($::idrac_ad_grp3_Domain) and $AD_G3Dom  != $::idrac_ad_grp3_Domain {
     exec {'set_addom3':
-      command => "racadm get idrac.adgroup.3.domain $AD_G3Dom",
+      command => "racadm set idrac.adgroup.3.domain $AD_G3Dom",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adpri3'],
     }
    }
    if defined($::idrac_ad_grp3_Privilege) and $AD_G3Priv  != $::idrac_ad_grp3_Privilege {
     exec {'set_adpri3':
-      command => "racadm get idrac.adgroup.3.privilege $AD_G3Priv",
+      command => "racadm set idrac.adgroup.3.privilege $AD_G3Priv",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adgrp4'],
     }
@@ -257,21 +257,21 @@ if $::manufacturer == 'Dell Inc.' and $ensure == 'present' and $ad == '1' {
 
   if defined($::idrac_ad_grp4_Name) and $AD_G4Name  != $::idrac_ad_grp4_Name  {
     exec {'set_adgrp4':
-      command => "racadm get idrac.adgroup.4.name $AD_G4Name",
+      command => "racadm set idrac.adgroup.4.name $AD_G4Name",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_addom4'],
     }
   }
    if defined($::idrac_ad_grp4_Domain) and $AD_G4Dom  != $::idrac_ad_grp4_Domain {
     exec {'set_addom4':
-      command => "racadm get idrac.adgroup.4.domain $AD_G4Dom",
+      command => "racadm set idrac.adgroup.4.domain $AD_G4Dom",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adpri4'],
     }
    }
    if defined($::idrac_ad_grp4_Privilege) and $AD_G4Priv  != $::idrac_ad_grp4_Privilege {
     exec {'set_adpri4':
-      command => "racadm get idrac.adgroup.4.privilege $AD_G4Priv",
+      command => "racadm set idrac.adgroup.4.privilege $AD_G4Priv",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adgrp5'],
     }
@@ -280,21 +280,21 @@ if $::manufacturer == 'Dell Inc.' and $ensure == 'present' and $ad == '1' {
 
   if defined($::idrac_ad_grp5_Name) and $AD_G5Name  != $::idrac_ad_grp5_Name  {
     exec {'set_adgrp5':
-      command => "racadm get idrac.adgroup.5.name $AD_G5Name",
+      command => "racadm set idrac.adgroup.5.name $AD_G5Name",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_addom5'],
     }
   }
    if defined($::idrac_ad_grp5_Domain) and $AD_G5Dom  != $::idrac_ad_grp5_Domain {
     exec {'set_addom5':
-      command => "racadm get idrac.adgroup.5.domain $AD_G5Dom",
+      command => "racadm set idrac.adgroup.5.domain $AD_G5Dom",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adpri5'],
     }
    }
    if defined($::idrac_ad_grp5_Privilege) and $AD_G5Priv  != $::idrac_ad_grp5_Privilege {
     exec {'set_adpri5':
-      command => "racadm get idrac.adgroup.5.privilege $AD_G1Priv",
+      command => "racadm set idrac.adgroup.5.privilege $AD_G1Priv",
       path    => '/opt/dell/srvadmin/sbin/',
       before  => EXEC['set_adgrp5'],
     }
