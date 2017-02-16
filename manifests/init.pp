@@ -8,7 +8,7 @@ $ensure         = 'present',
 $hostname       = $::hostname,
 $racname        = "idrac-${::hostname}",
 $dhcp           = 1,
-$ad             = $idrac_config::activedirectory::AD_Enable,
+$manage_ad       = false,
 $staticip       = $idrac_config::params::staticip,
 $netmask        = $idrac_config::params::netmask,
 $gateway        = $idrac_config::params::gateway,
@@ -43,6 +43,26 @@ $allsoftware    =  [ 'srvadmin-idrac7', 'srvadmin-idrac', 'srvadmin-racadm5', 's
       hour    => '6',
       minute  => '0',
    }
+     if $manage_ad == true and $::idrac_ad != 'Enabled' {
+       file { "$scriptpath/active_directory.sh":
+        ensure =>   file,
+         owner =>   'root',
+         group =>   'root',
+          mode =>   '0744',
+       content =>   template('idrac_config/active_directory.erb'),
+       }
+     
+       exec { 'idrac-setad':
+       command =>   "$scriptpath/idrac_delay.sh 10s $scriptpath/activedirectory.sh",
+       }
+   } 
+
+     if $manage_ad == false {
+       file { "$scriptpath/active_directory.sh":
+        ensure =>   absent
+       }
+   } 
+
      if $idracversion == 'all' {
 
         package { $allsoftware:
@@ -146,6 +166,7 @@ elsif $dhcp == '1' and  $racname != $::idrac_hostname {
    } 
   }
  }
+
 elsif $ensure == 'absent' {
   package { $allsoftware:
    ensure =>  'absent',
@@ -158,3 +179,4 @@ elsif $ensure == 'absent' {
   }
  }
 }
+

@@ -1,0 +1,170 @@
+#!/bin/bash
+
+function varcreate {
+/opt/puppet/bin/facter > /tmp/adfacts.tmp 
+
+	authtimeout=$(egrep 'idrac_ad_authtimeout' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	certval=$(egrep 'idrac_ad_certvalidationenable' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	schema=$(egrep 'idrac_schema' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	dc1=$(egrep 'idrac_ad_domainController1' /tmp/adfacts.tmp | awk -F'>' '{print $2}') 
+	dc2=$(egrep 'idrac_ad_domainController2' /tmp/adfacts.tmp | awk -F'>' '{print $2}') 
+	dc3=$(egrep 'idrac_ad_domainController3' /tmp/adfacts.tmp | awk -F'>' '{print $2}') 
+	gclookup=$(egrep 'idrac_ad_gclookupenable' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	gc1=$(egrep 'idrac_ad_globalcatalog1' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	gc2=$(egrep 'idrac_ad_globalcatalog2' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	gc3=$(egrep 'idrac_ad_globalcatalog3' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	sso=$(egrep 'idrac_ad_ssoenable' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	dclookup=$(egrep 'idrac_ad_dclookupenable' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	dcud=$(egrep 'idrac_ad_dclookupbyuserdomain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	dcdn=$(egrep 'idrac_ad_dclookupdomainname' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	gcr=$(egrep 'idrac_ad_gcrootdomain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	racdom=$(egrep 'idrac_ad_racdomain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	racname=$(egrep 'idrac_ad_racName' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g1n=$(egrep 'idrac_ad_grp1_name' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g1d=$(egrep 'idrac_ad_grp1_domain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g1p=$(egrep 'idrac_ad_grp1_privilegie' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g2n=$(egrep 'idrac_ad_grp2_name' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g2d=$(egrep 'idrac_ad_grp2_domain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g2p=$(egrep 'idrac_ad_grp2_privilegie' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g3n=$(egrep 'idrac_ad_grp3_name' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g3d=$(egrep 'idrac_ad_grp3_domain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g3p=$(egrep 'idrac_ad_grp3_privilegie' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g4n=$(egrep 'idrac_ad_grp4_name' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g4d=$(egrep 'idrac_ad_grp4_domain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g4p=$(egrep 'idrac_ad_grp4_privilegie' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g5n=$(egrep 'idrac_ad_grp5_name' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g5d=$(egrep 'idrac_ad_grp5_domain' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+	g5p=$(egrep 'idrac_ad_grp5_privilegie' /tmp/adfacts.tmp | awk -F'>' '{print $2}')
+}
+
+function racset {
+
+	if [$authtimeout != "<%=AD_Authtimeout%>" ]; then
+		racadm set idrac.activedirectory.authtimeout <%=AD_Authtimeout%>
+	fi
+
+	if [$certval != "<%=AD_CertValidationEnable%>" ]; then
+		racadm set idrac.activedirectory.CertValidationEnable <%=AD_CertValidationEnable%>
+	fi
+
+	if [$schema != "<%=AD_Schema%>" ]; then
+		racadm set idrac.activedirectory.schema <%=AD_Schema%>
+	fi
+
+	if [$dc1 != "<%=AD_DC1%>" ]; then
+		racadm set idrac.activedirectory.DomainController1 <%=AD_DC1%>
+	fi
+	
+	if [$dc2 != "<%=AD_DC2%>" ]; then
+		racadm set idrac.activedirectory.DomainController2 <%=AD_DC2%>
+	fi
+
+	if [$dc3 != "<%=AD_DC3%>" ]; then
+		racadm set idrac.activedirectory.DomainController3 <%=AD_DC3%>
+	fi
+
+	if [$gclookup != "<%=AD_GCLookupEnable%>" ]; then
+		racadm set idrac.activedirectory.GCLookupEnable <%=AD_GCLookupEnable%>
+	fi
+	
+	if [$gc1 != "<%=AD_GC1%>" ]; then
+		racadm set idrac.activedirectory.GlobalCatalog1 <%=AD_GC1%>
+	fi
+	
+	if [$gc2 != "<%=AD_GC2%>" ]; then
+		racadm set idrac.activedirectory.GlobalCatalog2 <%=AD_GC2%>
+	fi
+
+	if [$gc3 != "<%=AD_GC3%>" ]; then
+		racadm set idrac.activedirectory.GlobalCatalog3 <%=AD_GC3%>
+	fi
+
+	if [$sso != "<%=AD_SSOEnable%>" ]; then
+	    	racadm set idrac.activedirectory.SSOEnable <%=AD_SSOEnable%>
+	fi
+
+	if [$dclookup != "<%=AD_DCLookupEnable%>" ]; then
+		racadm set idrac.activedirectory.DCLookupEnable <%=AD_DCLookupEnable%>
+	fi
+
+	if [$dcud != "<%=AD_DCLookupByUserDomain%>" ]; then
+		racadm set idrac.activedirectory.DCLookupByUserDomain <%=AD_DCLookupByUserDomain%>
+	fi
+
+	if [$dcdn != "<%=AD_DCLookupDomainName%>" ]; then
+		racadm set idrac.activedirectory.DCLookupDomainName <%=AD_DCLookupDomainName%>
+	fi
+	
+	if [$gcr != "<%=AD_GCRootDomain%>" ]; then
+		racadm set idrac.activedirectory.GCRootDomain <%=AD_GCRootDomain%>
+	fi
+
+	if [$racdom != "<%=AD_RacDomain%>" ]; then
+		racadm set idrac.activedirectory.RacDomain <%=AD_RacDomain%>
+	fi
+
+	if [$g1n != "<%=AD_G1Name%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G1Name%>
+	fi
+
+	if [$g1d != "<%=AD_G1Dom%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G1Dom%>
+	fi
+
+	if [$g1p != "<%=AD_G1Priv%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G1Priv%>
+	fi
+
+	if [$g2n != "<%=AD_G2Name%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G2Name%>
+	fi
+
+	if [$g2d != "<%=AD_G2Dom%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G2Dom%>
+	fi
+
+	if [$g2p != "<%=AD_G2Priv%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G2Priv%>
+	fi
+
+	if [$g3n != "<%=AD_G3Name%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G3Name%>
+	fi
+
+	if [$g3d != "<%=AD_G3Dom%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G3Dom%>
+	fi
+
+	if [$g3p != "<%=AD_G3Priv%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G3Priv%>
+	fi
+
+	if [$g4n != "<%=AD_G4Name%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G4Name%>
+	fi
+
+	if [$g4d != "<%=AD_G4Dom%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G4Dom%>
+	fi
+	
+	if [$g4p != "<%=AD_G4Priv%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G4Priv%>
+	fi
+	
+	if [$g5n != "<%=AD_G5Name%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G5Name%>
+	fi
+
+	if [$g5d != "<%=AD_G5Dom%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G5Dom%>
+	fi
+	
+	if [$g5p != "<%=AD_G5Priv%>" ]; then
+		racadm set idrac.activedirectory.RacName <%=AD_G5Priv%>
+	fi
+}
+
+varcreate
+racset
+
+exit 0
